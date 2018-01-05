@@ -1,0 +1,51 @@
+#make a directory for your HTS sequence processing software "sequence-processing-software"
+#this is where you will download the programs to
+#then link the excecutable files from that directory to bin
+
+#download and get Fastqc working
+cd ~/sequence-processing-software
+curl -O http://www.bioinformatics.babraham.ac.uk/projects/fastqc/fastqc_v0.11.2.zip
+unzip fastqc_v0.11.2.zip
+#make fastqc file excecutable
+chmod +x fastqc
+
+# We want fastqc to be globally available, link the excecutable file to a location
+ln -s sequence_processing_software/FastQC/fastqc /usr/local/bin
+#make sure bin is in your PATH
+echo 'export PATH=/usr/local/bin:$PATH' >> ~/.zshrc
+
+# Install prinseq
+# We need to also pass the -L flag since this site uses link redirects and
+# we want to follow those
+curl -OL http://downloads.sourceforge.net/project/prinseq/standalone/prinseq-lite-0.20.4.tar.gz
+
+# Unpack the archive.
+tar zxvf prinseq-lite-0.20.4.tar.gz
+
+# Go into the archive and read the instructions
+# located in the README file. Let's follow what it says there.
+cd prinseq-lite-0.20.4
+
+# Make the script executable.
+chmod +x prinseq-lite.pl
+
+# Link it 
+ln -s ~/sequence_processing_software/prinseq-lite-0.20.4/prinseq-lite.pl /usr/local/bin/prinseq-lite
+
+# Now you have prinseq running anywhere on your system.
+
+cd ~/sequence_processing_software
+
+#trimmomatic
+curl -O http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.32.zip
+unzip Trimmomatic-0.32.zip
+cd Trimmomatic-0.32
+
+# Alas not much is there. You got to hit the manual at:
+# http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/TrimmomaticManual_V0.32.pdf
+# Lets make a script that lauches that for us.
+
+
+echo '#!/bin/bash' > /usr/local/bin/trimmomatic
+echo 'java -jar ~/sequence_processing_software/Trimmomatic-0.32/trimmomatic-0.32.jar $@' >> /usr/local/bin/trimmomatic
+chmod +x /usr/local/bin/trimmomatic
