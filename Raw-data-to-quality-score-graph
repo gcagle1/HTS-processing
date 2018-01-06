@@ -1,0 +1,5 @@
+#Remove barcodes from the run not associated with your project with fastx barcode splitter
+
+cd ~/replanting_files
+
+trimmomatic PE -threads 2 -phred33 -trimlog /Users/gracecagle/analysis/replant/2018-01-06/trimlog -basein
